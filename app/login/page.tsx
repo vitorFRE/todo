@@ -1,8 +1,16 @@
 import { LoginForm } from '@/components/loginPage/loginForm'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
+import getCurrentUser from '../actions/getCurrentUser'
+import { redirect } from 'next/navigation'
 
-const Login = () => {
+const Login = async () => {
+	const currentUser = await getCurrentUser()
+
+	if (currentUser) {
+		redirect('/')
+	}
+
 	return (
 		<main className='grid grid-cols-1 lg:grid-cols-2 min-h-screen'>
 			<div className='hidden bg-auth-bg bg-cover lg:flex justify-center items-center relative'>

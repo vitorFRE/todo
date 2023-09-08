@@ -53,7 +53,14 @@ export function RegisterForm() {
 				router.push('/login')
 			})
 			.catch((error) => {
-				toast.error('Deu algum erro ao se cadastrar')
+				console.log(error)
+				if (error.response) {
+					toast.error(`Erro: ${error.response.data.error}`)
+				} else if (error.request) {
+					toast.error('Erro de rede. Tente novamente mais tarde.')
+				} else {
+					toast.error('Ocorreu um erro. Tente novamente mais tarde.')
+				}
 			})
 			.finally(() => {
 				setIsloading(false)
