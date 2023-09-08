@@ -19,6 +19,9 @@ module.exports = {
 			gridTemplateColumns: {
 				authGrid: '1fr auto'
 			},
+			linearGradients: {
+				purpleBG: ['219deg', 'rgba(44, 0, 73, 0.80)', 'rgba(49, 0, 81, 0.80)']
+			},
 			backgroundImage: {
 				'auth-bg':
 					"url('https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2564&q=80')"
