@@ -1,5 +1,7 @@
 'use client'
 
+import axios from 'axios'
+import { toast } from 'react-hot-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
@@ -14,6 +16,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
 	username: z.string().min(2, {
@@ -26,6 +30,9 @@ const formSchema = z.object({
 })
 
 export function RegisterForm() {
+	const [isLoading, setIsloading] = useState(false)
+	const router = useRouter()
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -36,7 +43,21 @@ export function RegisterForm() {
 	})
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
+		setIsloading(true)
 		console.log(values)
+
+		axios
+			.post('/api/register', values)
+			.then(() => {
+				toast.success('Conta criada')
+				router.push('/login')
+			})
+			.catch((error) => {
+				toast.error('Deu algum erro ao se cadastrar')
+			})
+			.finally(() => {
+				setIsloading(false)
+			})
 	}
 
 	return (
@@ -81,7 +102,9 @@ export function RegisterForm() {
 						</FormItem>
 					)}
 				/>
-				<Button type='submit'>Cadastrar</Button>
+				<Button disabled={isLoading} type='submit'>
+					Cadastrar
+				</Button>
 			</form>
 		</Form>
 	)
