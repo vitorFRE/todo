@@ -19,10 +19,12 @@ const Cadastro = async () => {
 				<div className='absolute inset-0 bg-black opacity-50 z-10'></div>
 			</div>
 
-			<section className='bg-white flex flex-col justify-center items-center mx-4'>
+			<section className=' flex flex-col justify-center items-center mx-4'>
 				<div>
 					<div className='flex flex-col gap-1 mb-4'>
-						<h1 className='text-slate-900 text-2xl font-bold'>Cadastre-se</h1>
+						<h1 className='text-slate-900 dark:text-white text-2xl font-bold'>
+							Cadastre-se
+						</h1>
 						<p className='text-neutral-500 font-medium'>
 							Seja eficiente, seja Draft. seu parceiro de organização.
 						</p>
@@ -30,7 +32,9 @@ const Cadastro = async () => {
 					<RegisterForm />
 					<Separator className='my-6' />
 					<div className='flex justify-between'>
-						<p className='text-slate-900 font-medium'>Já tem uma conta ?</p>
+						<p className='text-slate-900 dark:text-white font-medium'>
+							Já tem uma conta ?
+						</p>
 						<Link href={'/login'} className='text-purple-700 font-semibold'>
 							Entrar
 						</Link>

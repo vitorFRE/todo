@@ -15,7 +15,9 @@ export default async function Home() {
 				<div className='absolute inset-0 bg-black opacity-90'></div>
 				<div className='absolute inset-0 bg-gradient-to-r from-[#2c0049cc] md:from-[#310051cc]'></div>
 			</div>
-			<NavBar />
+			<div className='bg-white dark:bg-slate-950'>
+				<NavBar />
+			</div>
 		</main>
 	)
 }
