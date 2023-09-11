@@ -4,20 +4,13 @@ import { LogOut } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { ModeToggle } from '../modeToggle'
 import { Button } from '@/components/ui/button'
-import { useTheme } from 'next-themes'
 
 export const NavBar = () => {
-	const { theme } = useTheme()
-
-	let imageUrl = '/images/logodark.svg'
-	if (theme === 'dark') {
-		imageUrl = '/images/logo.svg'
-	}
-
 	return (
-		<header className='max-w-[1000px]  mx-auto xl:px-20 md:px-10 sm:px-2 px-4 flex justify-between items-center'>
+		<header className='flex justify-between items-center max-w-[1000px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4'>
 			<picture>
-				<img src={imageUrl} alt='Logo Draft' />
+				<img src='/images/logodark.svg' className='block dark:hidden' alt='Logo Draft' />
+				<img src='/images/logo.svg' className='hidden dark:block' alt='Logo Draft' />
 			</picture>
 
 			<nav className='flex items-center gap-4 py-4'>

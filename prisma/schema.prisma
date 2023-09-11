@@ -45,11 +45,12 @@ model User {
   image         String?
 
   hashedPassword String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  accounts      Account[]
-  sessions      Session[]
+  accounts Account[]
+  sessions Session[]
+  tasks    Task[]
 }
 
 model VerificationToken {
@@ -58,4 +59,13 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Task {
+  id          String  @id @default(cuid()) @map("_id")
+  title       String
+  description String?
+  completed   Boolean
+  userId      String
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

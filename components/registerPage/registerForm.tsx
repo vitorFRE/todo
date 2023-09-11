@@ -53,7 +53,6 @@ export function RegisterForm() {
 				router.push('/login')
 			})
 			.catch((error) => {
-				console.log(error)
 				if (error.response) {
 					toast.error(`Erro: ${error.response.data.error}`)
 				} else if (error.request) {
