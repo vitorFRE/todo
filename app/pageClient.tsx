@@ -16,14 +16,22 @@ import {
 	FormLabel,
 	FormMessage
 } from '@/components/ui/form'
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue
+} from '@/components/ui/select'
 import { NavBar } from '@/components/navbar/navBar'
-import { TaskCard } from '@/components/task/taskCard'
 import Container from '@/components/container'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 
-import { Plus, SlidersHorizontal } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { Task, User } from '@prisma/client'
 
 import { toast } from 'react-hot-toast'
@@ -32,6 +40,8 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useState } from 'react'
 import axios from 'axios'
+import { TaskPopover } from '@/components/task/taskPopover'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
 	title: z.string().min(5, {
@@ -50,6 +60,8 @@ interface PageClientProps {
 export default function PageClient({ currentUser, tasks }: PageClientProps) {
 	const [isLoading, setIsloading] = useState(false)
 	const [open, setOpen] = useState(false)
+	const router = useRouter()
+	const [filter, setFilter] = useState('all')
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -67,6 +79,7 @@ export default function PageClient({ currentUser, tasks }: PageClientProps) {
 			.then(() => {
 				toast.success('Tarefa criada :D')
 				setOpen(false)
+				router.refresh()
 				form.reset()
 			})
 			.catch((error) => {
@@ -76,6 +89,16 @@ export default function PageClient({ currentUser, tasks }: PageClientProps) {
 				setIsloading(false)
 			})
 	}
+
+	const filteredTasks = tasks?.filter((task) => {
+		if (filter === 'completed') {
+			return task.completed === true
+		} else if (filter === 'pending') {
+			return task.completed === false
+		} else {
+			return true
+		}
+	})
 
 	return (
 		<main className='relative min-h-screen'>
@@ -138,18 +161,30 @@ export default function PageClient({ currentUser, tasks }: PageClientProps) {
 				</Dialog>
 				<div className='mt-[108px] flex items-center justify-between'>
 					<h1 className='font-semibold text-2xl'>Lista</h1>
-					<Button variant={'outline'}>
-						<SlidersHorizontal className='mr-2 h-4 w-4' />
-						Filtros
-					</Button>
+					<Select
+						onValueChange={(e) => {
+							setFilter(e)
+						}}>
+						<SelectTrigger className='w-[180px]'>
+							<SelectValue placeholder='Filtros' />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectGroup>
+								<SelectItem value='all'>Todas</SelectItem>
+								<SelectItem value='completed'>Concluidas</SelectItem>
+								<SelectItem value='pending'>Pendentes</SelectItem>
+							</SelectGroup>
+						</SelectContent>
+					</Select>
 				</div>
 				<div className='mt-11 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-					{tasks?.map((task) => (
-						<TaskCard
-							key={task.title}
+					{filteredTasks?.map((task) => (
+						<TaskPopover
+							description={task.description}
+							taskId={task.id}
 							status={task.completed}
 							title={task.title}
-							description={task.description}
+							key={task.title}
 						/>
 					))}
 				</div>
